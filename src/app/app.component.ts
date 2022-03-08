@@ -267,4 +267,6 @@ export class AppComponent {
   isDanger = false;
   isWarning = false;
   classes = 'box red-border yellow-background';
+
+  currentProcess = 70;
 }

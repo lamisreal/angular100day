@@ -1,185 +1,196 @@
-<p>{{ title }}</p>
+<div hidden>
+  <p>{{ title }}</p>
 
-<div *ngIf="!userHidden; else userIsNotHidden">
-  <app-hello *ngIf="user.age >= 18; else under18">
-    <!-- evalu expression -->
-    <p>Name: {{ user.name }}</p>
-    <p>Age: {{ user.age }}</p>
+  <div *ngIf="!userHidden; else userIsNotHidden">
+    <app-hello *ngIf="user.age >= 18; else under18">
+      <!-- evalu expression -->
+      <p>Name: {{ user.name }}</p>
+      <p>Age: {{ user.age }}</p>
 
-    <!-- <input type="text" value="Lam1" /> -->
-    <!-- <input [type]="'text'" [value]="user.name + 2" />
-        <input type="{text}" value="3" />
-        <input type="{inputType}" value="4" /> -->
+      <!-- <input type="text" value="Lam1" /> -->
+      <!-- <input [type]="'text'" [value]="user.name + 2" />
+          <input type="{text}" value="3" />
+          <input type="{inputType}" value="4" /> -->
+
+      <br />
+      <input type="text" [(ngModel)]="title" (ngModelChange)="title = $event" />
+      <button type="button" (click)="handler($event)">Click Me</button>
+    </app-hello>
 
     <br />
-    <input type="text" [(ngModel)]="title" (ngModelChange)="title = $event" />
-    <button type="button" (click)="handler($event)">Click Me</button>
-  </app-hello>
+    <br />
+    <input #ageId type="text" id="ageId" [name]="user.age" [value]="user.age" />
+    <button type="button" (click)="handlerChangeAge(ageId.value)">
+      Update Age
+    </button>
 
-  <br />
-  <br />
-  <input #ageId type="text" id="ageId" [name]="user.age" [value]="user.age" />
-  <button type="button" (click)="handlerChangeAge(ageId.value)">
-    Update Age
+    <!-- else age <= 10 -->
+    <ng-template #under18>
+      <p>You are too young to see this content</p>
+    </ng-template>
+  </div>
+
+  <!-- List user with ngFor cung cấp-->
+
+  <!-- • $implicit: item: Giá trị của phần tử trong danh sách ở lần lặp hiện tại
+  • index: number: index của lần lặp hiện tại
+  • count: number: số lượng phần tử trong danh sách
+  • first: boolean: True nếu đây là phẩn tử đầu tiên trong danh sách
+  • last: boolean: True nếu đây là phẩn tử cuối cùng trong danh sách
+  • even: boolean: True nếu đây là phần tử ở index chẫn
+  • odd: boolean: True nếu dây là phần tử ở index lẻ -->
+
+  <ng-template #userIsNotHidden>
+    <div>
+      <ul>
+        <ng-container *ngIf="users.length > 0; else noUsers">
+          <li
+            *ngFor="
+              let user of users;
+              index as indx;
+              count as total;
+              first as isFirst;
+              last as isLast;
+              even as isEven;
+              odd as isOdd
+            "
+          >
+            <!-- <span>{{ user.name }} - {{ user.id }} - {{ user.phone }}</span> -->
+            <br />
+            <span>at index {{ indx }} out of {{ total }}</span>
+            <br />
+            <span *ngIf="isEven">I am even <br /></span>
+            <span *ngIf="isOdd">I am Odd <br /></span>
+            <span *ngIf="isFirst">I am First <br /></span>
+            <span *ngIf="isLast">I am Last <br /></span>
+            <br />
+            <br />
+
+            <button
+              *ngFor="let tag of tags; last as islast"
+              [class.right-margin]="!isLast"
+            >
+              {{ tag }}
+            </button>
+          </li>
+        </ng-container>
+      </ul>
+
+      <ng-template #noUsers>No Users</ng-template>
+
+      <!-- or another #2 list user with code another -->
+      <!-- <ul>
+        <ng-template
+          ngFor
+          [ngForOf]="users"
+          let-user
+          let-indx="index"
+          let-total="count"
+          let-isFirst="first"
+          let-isLast="last"
+          let-isEven="even"
+          let-isOdd="odd"
+        >
+          <li>
+            <span>{{ user.name }} - {{ user.id }} - {{ user.phone }}</span>
+            <br />
+            <span>at index {{ indx }} out of {{ total }}</span>
+            <br />
+            <span *ngIf="isEven">I am even <br /></span>
+            <span *ngIf="isOdd">I am Odd <br /></span>
+            <span *ngIf="isFirst">I am First <br /></span>
+            <span *ngIf="isLast">I am Last <br /></span>
+            <br />
+            <br />
+
+            <button
+              *ngFor="let tag of tags; last as islast"
+              [class.right-margin]="!isLast"
+            >
+              {{ tag }}
+            </button>
+          </li>
+        </ng-template>
+      </ul> -->
+    </div>
+  </ng-template>
+  <!-- End List user -->
+
+  <button *ngIf="!userHidden" type="button" (click)="userHidden = !userHidden">
+    Go to User
+  </button>
+  <button *ngIf="userHidden" type="button" (click)="userHidden = !userHidden">
+    Go to Home
   </button>
 
-  <!-- else age <= 10 -->
-  <ng-template #under18>
-    <p>You are too young to see this content</p>
-  </ng-template>
+  <p>---------------------------------------------</p>
+
+  <p>Start editing to see some magic happen :)</p>
+  <button (click)="isDanger = !isDanger">Toggle Danger</button>
+  <button (click)="isWarning = !isWarning">Toggle Warning</button>
+
+  <!-- css cho thuộc tính class -->
+  <!-- 1. [class.ten-class] -->
+  <!-- 2. [class]="array" -->
+  <!-- 3. [class]="object" { [ten-class: string]: boolean } -->
+  <!-- 4. [class]="variable" -->
+
+  <!-- cách 1-->
+  <div class="box red-border yellow-background"></div>
+  <!-- cách 2-->
+  <div
+    class="box"
+    [class.red-border]="isDanger"
+    [class.yellow-background]="isWarning"
+  ></div>
+
+  <!-- Cách 3 -->
+  <div
+    class="box"
+    [class]="{ 'red-border': isDanger, 'yellow-background': isWarning }"
+  ></div>
+
+  <!-- Cách 4 -->
+  <div [class]="classes"></div>
+  <!-- End css cho thuộc tính class -->
+
+  <!--
+    1. [style.tenStyle]
+    2. [style.ten-style]
+    3. [style.tenStyle.unit]
+    4. [style]="object"
+    5. [style.css-variable] -->
+
+  <!-- Cách 1 -->
+  <p
+    [style.color]="'red'"
+    [style.background-color]="'yellow'"
+    [style.fontSize.em]="2"
+  >
+    Start editing to see some magic happen 1
+  </p>
+
+  <!-- Cách 2 -->
+  <p [style]="{ color: 'red', backgroundColor: 'yellow', fontSize: '2rem' }">
+    Start editing to see some magic happen 2
+  </p>
+
+  <!-- Cách 5 -->
+  <p
+    [style.--text-color]="isDanger ? 'red' : 'blue'"
+    [style]="{
+      color: 'var(--text-color)',
+      backgroundColor: 'yellow',
+      fontSize: '2rem'
+    }"
+  >
+    Start editing to see some magic happen 5
+  </p>
 </div>
 
-<!-- List user with ngFor cung cấp-->
-
-<!-- • $implicit: item: Giá trị của phần tử trong danh sách ở lần lặp hiện tại
-• index: number: index của lần lặp hiện tại
-• count: number: số lượng phần tử trong danh sách
-• first: boolean: True nếu đây là phẩn tử đầu tiên trong danh sách
-• last: boolean: True nếu đây là phẩn tử cuối cùng trong danh sách
-• even: boolean: True nếu đây là phần tử ở index chẫn
-• odd: boolean: True nếu dây là phần tử ở index lẻ -->
-
-<ng-template #userIsNotHidden>
-  <div>
-    <ul>
-      <ng-container *ngIf="users.length > 0; else noUsers">
-        <li
-          *ngFor="
-            let user of users;
-            index as indx;
-            count as total;
-            first as isFirst;
-            last as isLast;
-            even as isEven;
-            odd as isOdd
-          "
-        >
-          <!-- <span>{{ user.name }} - {{ user.id }} - {{ user.phone }}</span> -->
-          <br />
-          <span>at index {{ indx }} out of {{ total }}</span>
-          <br />
-          <span *ngIf="isEven">I am even <br /></span>
-          <span *ngIf="isOdd">I am Odd <br /></span>
-          <span *ngIf="isFirst">I am First <br /></span>
-          <span *ngIf="isLast">I am Last <br /></span>
-          <br />
-          <br />
-
-          <button
-            *ngFor="let tag of tags; last as islast"
-            [class.right-margin]="!isLast"
-          >
-            {{ tag }}
-          </button>
-        </li>
-      </ng-container>
-    </ul>
-
-    <ng-template #noUsers>No Users</ng-template>
-
-    <!-- or another #2 list user with code another -->
-    <!-- <ul>
-      <ng-template
-        ngFor
-        [ngForOf]="users"
-        let-user
-        let-indx="index"
-        let-total="count"
-        let-isFirst="first"
-        let-isLast="last"
-        let-isEven="even"
-        let-isOdd="odd"
-      >
-        <li>
-          <span>{{ user.name }} - {{ user.id }} - {{ user.phone }}</span>
-          <br />
-          <span>at index {{ indx }} out of {{ total }}</span>
-          <br />
-          <span *ngIf="isEven">I am even <br /></span>
-          <span *ngIf="isOdd">I am Odd <br /></span>
-          <span *ngIf="isFirst">I am First <br /></span>
-          <span *ngIf="isLast">I am Last <br /></span>
-          <br />
-          <br />
-
-          <button
-            *ngFor="let tag of tags; last as islast"
-            [class.right-margin]="!isLast"
-          >
-            {{ tag }}
-          </button>
-        </li>
-      </ng-template>
-    </ul> -->
-  </div>
-</ng-template>
-<!-- End List user -->
-
-<button *ngIf="!userHidden" type="button" (click)="userHidden = !userHidden">
-  Go to User
-</button>
-<button *ngIf="userHidden" type="button" (click)="userHidden = !userHidden">
-  Go to Home
-</button>
-
-<p>---------------------------------------------</p>
-
-<p>Start editing to see some magic happen :)</p>
-<button (click)="isDanger = !isDanger">Toggle Danger</button>
-<button (click)="isWarning = !isWarning">Toggle Warning</button>
-
-<!-- css cho thuộc tính class -->
-<!-- 1. [class.ten-class] -->
-<!-- 2. [class]="array" -->
-<!-- 3. [class]="object" { [ten-class: string]: boolean } -->
-<!-- 4. [class]="variable" -->
-
-<!-- cách 1-->
-<div class="box red-border yellow-background"></div>
-<!-- cách 2-->
-<div
-  class="box"
-  [class.red-border]="isDanger"
-  [class.yellow-background]="isWarning"
-></div>
-
-<!-- Cách 3 -->
-<div
-  class="box"
-  [class]="{ 'red-border': isDanger, 'yellow-background': isWarning }"
-></div>
-
-<!-- Cách 4 -->
-<div [class]="classes"></div>
-<!-- End css cho thuộc tính class -->
-
-<!--
-  1. [style.tenStyle]
-  2. [style.ten-style]
-  3. [style.tenStyle.unit]
-  4. [style]="object"
-  5. [style.css-variable] -->
-
-<!-- Cách 1 -->
-<p
-  [style.color]="'red'"
-  [style.background-color]="'yellow'"
-  [style.fontSize.em]="2"
->
-  Start editing to see some magic happen 1
-</p>
-
-<!-- Cách 2 -->
-<p [style]="{ color: 'red', backgroundColor: 'yellow', fontSize: '2rem' }">
-  Start editing to see some magic happen 2
-</p>
-
-<!-- Cách 5 -->
-<p
-  [style.--text-color]="isDanger ? 'red' : 'blue'"
-  [style]="{
-    color: 'var(--text-color)',
-    backgroundColor: 'yellow',
-    fontSize: '2rem'
-  }"
->  Start editing to see some magic happen 5</p>
+<!-- Input -->
+<div>
+  <app-progress-bar></app-progress-bar>
+  <br />
+  <app-progress-bar [progress]="currentProcess" progressColor="blue"></app-progress-bar>
+</div>
