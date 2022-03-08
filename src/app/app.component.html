@@ -121,3 +121,65 @@
 <button *ngIf="userHidden" type="button" (click)="userHidden = !userHidden">
   Go to Home
 </button>
+
+<p>---------------------------------------------</p>
+
+<p>Start editing to see some magic happen :)</p>
+<button (click)="isDanger = !isDanger">Toggle Danger</button>
+<button (click)="isWarning = !isWarning">Toggle Warning</button>
+
+<!-- css cho thuộc tính class -->
+<!-- 1. [class.ten-class] -->
+<!-- 2. [class]="array" -->
+<!-- 3. [class]="object" { [ten-class: string]: boolean } -->
+<!-- 4. [class]="variable" -->
+
+<!-- cách 1-->
+<div class="box red-border yellow-background"></div>
+<!-- cách 2-->
+<div
+  class="box"
+  [class.red-border]="isDanger"
+  [class.yellow-background]="isWarning"
+></div>
+
+<!-- Cách 3 -->
+<div
+  class="box"
+  [class]="{ 'red-border': isDanger, 'yellow-background': isWarning }"
+></div>
+
+<!-- Cách 4 -->
+<div [class]="classes"></div>
+<!-- End css cho thuộc tính class -->
+
+<!--
+  1. [style.tenStyle]
+  2. [style.ten-style]
+  3. [style.tenStyle.unit]
+  4. [style]="object"
+  5. [style.css-variable] -->
+
+<!-- Cách 1 -->
+<p
+  [style.color]="'red'"
+  [style.background-color]="'yellow'"
+  [style.fontSize.em]="2"
+>
+  Start editing to see some magic happen 1
+</p>
+
+<!-- Cách 2 -->
+<p [style]="{ color: 'red', backgroundColor: 'yellow', fontSize: '2rem' }">
+  Start editing to see some magic happen 2
+</p>
+
+<!-- Cách 5 -->
+<p
+  [style.--text-color]="isDanger ? 'red' : 'blue'"
+  [style]="{
+    color: 'var(--text-color)',
+    backgroundColor: 'yellow',
+    fontSize: '2rem'
+  }"
+>  Start editing to see some magic happen 5</p>

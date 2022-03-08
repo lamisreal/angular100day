@@ -264,5 +264,7 @@ export class AppComponent {
 
   tags = ['username', 'password', 'group'];
 
-  // ngFor Directive
+  isDanger = false;
+  isWarning = false;
+  classes = 'box red-border yellow-background';
 }
